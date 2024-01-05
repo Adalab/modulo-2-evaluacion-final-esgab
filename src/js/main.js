@@ -1,5 +1,9 @@
 'use strict';
 
+// QUERYSELECTORS
+
+const charactersList = document.querySelector('.js__charactersList');
+
 // DATA
 
 let disneyCharacters = [];
@@ -24,6 +28,17 @@ function getCharacterHtmlCode(character) {
   return characterHtml;
 }
 
+// Render characters
+function renderCharacters(characters, htmlelement) {
+  let charactersCode = '';
+
+  for (const character of characters) {
+    charactersCode += getCharacterHtmlCode(character);
+  }
+
+  htmlelement.innerHTML = charactersCode;
+}
+
 // CODE WHEN LOADING THE PAGE
 
 // Get data from api
@@ -33,6 +48,7 @@ const getApiData = () => {
     .then(data => { 
       disneyCharacters = data.data;
       console.log(disneyCharacters);
+      renderCharacters(disneyCharacters, charactersList);
   });
 };
   
