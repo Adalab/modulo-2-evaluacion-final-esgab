@@ -1,0 +1,21 @@
+.page__footer {
+    position: sticky;
+    bottom: 0;
+    padding: 6px 5%;
+    background-color: $color-main;
+    color: white;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    
+    .copy {
+        .link__adalab {
+            text-decoration: none;
+            color: white;
+            transition: ease-in-out .2s;
+            &:hover {
+                opacity: .6;
+            }
+        }
+    }
+}
