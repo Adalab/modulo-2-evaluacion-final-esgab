@@ -42,6 +42,16 @@ function renderCharacters(characters, htmlelement) {
   listenClickedCharacters();
 }
 
+// Listen clicked characters
+
+function listenClickedCharacters() {
+  const allCharactersLi = document.querySelectorAll('.js__characterItem');
+
+  for (const characterLi of allCharactersLi) {
+    characterLi.addEventListener('click', handleClickResult);
+  }
+}
+
 // EVENT FUNCTIONS (HANDLER)
 
 function handleClickResult(event) {
