@@ -4,6 +4,8 @@
 
 const charactersList = document.querySelector('.js__charactersList');
 const favoritesCharactersList = document.querySelector('.js__favoritesList');
+const searchCharacter = document.querySelector('.js__searchCharacter');
+const searchCharacterInput = document.querySelector('.js__searchCharacterInput');
 
 // DATA
 
@@ -52,6 +54,16 @@ function listenClickedCharacters() {
   }
 }
 
+const getApiFilteredData = (event) => {
+  event.preventDefault();
+  fetch(`//api.disneyapi.dev/character?pageSize=50&name=${searchCharacterInput.value}`)
+    .then(response => response.json())
+    .then(data => { 
+      disneyCharacters = data.data;
+      renderCharacters(disneyCharacters, charactersList);
+  });
+};
+
 // EVENT FUNCTIONS (HANDLER)
 
 function handleClickResult(event) {
@@ -75,6 +87,10 @@ function handleClickResult(event) {
 
   console.log(favoritesCharacters);
 }
+
+// EVENTS
+
+searchCharacter.addEventListener( 'submit', getApiFilteredData );
 
 // CODE WHEN LOADING THE PAGE
 
