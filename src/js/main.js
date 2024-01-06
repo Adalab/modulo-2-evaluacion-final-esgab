@@ -8,7 +8,8 @@ const favoritesCharactersList = document.querySelector('.js__favoritesList');
 // DATA
 
 let disneyCharacters = [];
-let favoritesCharacters  = [];
+let favoritesCharacters = [];
+const favoritesCharactersFromLS = JSON.parse( localStorage.getItem('favoritesCharacters') );
 
 // FUNCTIONS
 
@@ -43,13 +44,23 @@ function renderCharacters(characters, htmlelement) {
 }
 
 // Listen clicked characters
-
 function listenClickedCharacters() {
   const allCharactersLi = document.querySelectorAll('.js__characterItem');
 
   for (const characterLi of allCharactersLi) {
     characterLi.addEventListener('click', handleClickResult);
   }
+}
+
+// Render favorites from localStorage
+function renderFavoritesFromLS() {
+  if (favoritesCharactersFromLS === null) {
+    renderCharacters(favoritesCharacters, favoritesCharactersList);
+  } 
+  else {
+    favoritesCharacters = favoritesCharactersFromLS;
+    renderCharacters(favoritesCharacters, favoritesCharactersList);
+  } 
 }
 
 // EVENT FUNCTIONS (HANDLER)
@@ -68,12 +79,12 @@ function handleClickResult(event) {
   if(favoriteCharacterIndex === -1) {
     // put the character when it is not in favorites
     favoritesCharacters.push( selectedCharacter );
-    renderCharacters(favoritesCharacters, favoritesCharactersList);
-    // add the "favorite" class to the <li> element inside the clicked <li>
-    clickedLi.classList.add('favorite');
   }
-
-  console.log(favoritesCharacters);
+  
+  localStorage.setItem('favoritesCharacters', JSON.stringify(favoritesCharacters));
+  renderFavoritesFromLS();
+  // add the "favorite" class to the <li> element inside the clicked <li>
+  clickedLi.classList.add('favorite');
 }
 
 // CODE WHEN LOADING THE PAGE
@@ -86,6 +97,7 @@ const getApiData = () => {
       disneyCharacters = data.data;
       console.log(disneyCharacters);
       renderCharacters(disneyCharacters, charactersList);
+      renderFavoritesFromLS();
   });
 };
   
