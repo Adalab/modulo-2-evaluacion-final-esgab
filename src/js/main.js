@@ -10,7 +10,8 @@ const searchCharacterInput = document.querySelector('.js__searchCharacterInput')
 // DATA
 
 let disneyCharacters = [];
-let favoritesCharacters  = [];
+let favoritesCharacters = [];
+const favoritesCharactersFromLS = JSON.parse( localStorage.getItem('favoritesCharacters') );
 
 // FUNCTIONS
 
@@ -45,7 +46,6 @@ function renderCharacters(characters, htmlelement) {
 }
 
 // Listen clicked characters
-
 function listenClickedCharacters() {
   const allCharactersLi = document.querySelectorAll('.js__characterItem');
 
@@ -54,15 +54,16 @@ function listenClickedCharacters() {
   }
 }
 
-const getApiFilteredData = (event) => {
-  event.preventDefault();
-  fetch(`//api.disneyapi.dev/character?pageSize=50&name=${searchCharacterInput.value}`)
-    .then(response => response.json())
-    .then(data => { 
-      disneyCharacters = data.data;
-      renderCharacters(disneyCharacters, charactersList);
-  });
-};
+// Render favorites from localStorage
+function renderFavoritesFromLS() {
+  if (favoritesCharactersFromLS === null) {
+    renderCharacters(favoritesCharacters, favoritesCharactersList);
+  } 
+  else {
+    favoritesCharacters = favoritesCharactersFromLS;
+    renderCharacters(favoritesCharacters, favoritesCharactersList);
+  } 
+}
 
 // EVENT FUNCTIONS (HANDLER)
 
@@ -80,13 +81,23 @@ function handleClickResult(event) {
   if(favoriteCharacterIndex === -1) {
     // put the character when it is not in favorites
     favoritesCharacters.push( selectedCharacter );
-    renderCharacters(favoritesCharacters, favoritesCharactersList);
-    // add the "favorite" class to the <li> element inside the clicked <li>
-    clickedLi.classList.add('favorite');
   }
-
-  console.log(favoritesCharacters);
+  
+  localStorage.setItem('favoritesCharacters', JSON.stringify(favoritesCharacters));
+  renderFavoritesFromLS();
+  // add the "favorite" class to the <li> element inside the clicked <li>
+  clickedLi.classList.add('favorite');
 }
+
+const getApiFilteredData = (event) => {
+  event.preventDefault();
+  fetch(`//api.disneyapi.dev/character?pageSize=50&name=${searchCharacterInput.value}`)
+    .then(response => response.json())
+    .then(data => { 
+      disneyCharacters = data.data;
+      renderCharacters(disneyCharacters, charactersList);
+  });
+};
 
 // EVENTS
 
@@ -102,6 +113,7 @@ const getApiData = () => {
       disneyCharacters = data.data;
       console.log(disneyCharacters);
       renderCharacters(disneyCharacters, charactersList);
+      renderFavoritesFromLS();
   });
 };
   
