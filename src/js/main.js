@@ -3,10 +3,12 @@
 // QUERYSELECTORS
 
 const charactersList = document.querySelector('.js__charactersList');
+const favoritesCharactersList = document.querySelector('.js__favoritesList');
 
 // DATA
 
 let disneyCharacters = [];
+let favoritesCharacters  = [];
 
 // FUNCTIONS
 
@@ -18,7 +20,7 @@ function getCharacterHtmlCode(character) {
   }
 
   characterHtml += 
-  `<li class="character js__characterItem"">
+  `<li class="character js__characterItem" data-id="${character._id}>
     <div class="character__image-container">
       <img src="${character.imageUrl}" class="character__image alt="Producto: ${character.name}">
     </div>
@@ -37,6 +39,7 @@ function renderCharacters(characters, htmlelement) {
   }
 
   htmlelement.innerHTML = charactersCode;
+  listenClickedCharacters();
 }
 
 // CODE WHEN LOADING THE PAGE
