@@ -42,6 +42,27 @@ function renderCharacters(characters, htmlelement) {
   listenClickedCharacters();
 }
 
+// EVENT FUNCTIONS (HANDLER)
+
+function handleClickResult(event) {
+  // get the id of the clicked character
+  const clickedLi = event.currentTarget;
+  const clickedCharacterId = parseInt(clickedLi.dataset.id);
+  console.log(clickedCharacterId);
+  console.log("array", disneyCharacters)
+
+  const selectedCharacter = disneyCharacters.find( (character) => character._id === clickedCharacterId );
+  const favoriteCharacterIndex = favoritesCharacters.findIndex( (favoriteCharacter) => favoriteCharacter._id === clickedCharacterId );
+
+  if(favoriteCharacterIndex === -1) {
+    // put the character when it is not in favorites
+    favoritesCharacters.push( selectedCharacter );
+    renderCharacters(favoritesCharacters, favoritesCharactersList);
+  }
+
+  console.log(favoritesCharacters);
+}
+
 // CODE WHEN LOADING THE PAGE
 
 // Get data from api
