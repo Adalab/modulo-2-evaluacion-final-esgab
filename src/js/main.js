@@ -58,6 +58,7 @@ function handleClickResult(event) {
   // get the id of the clicked character
   const clickedLi = event.currentTarget;
   const clickedCharacterId = parseInt(clickedLi.dataset.id);
+  console.log(clickedLi);
   console.log(clickedCharacterId);
   console.log("array", disneyCharacters)
 
@@ -68,6 +69,8 @@ function handleClickResult(event) {
     // put the character when it is not in favorites
     favoritesCharacters.push( selectedCharacter );
     renderCharacters(favoritesCharacters, favoritesCharactersList);
+    // add the "favorite" class to the <li> element inside the clicked <li>
+    clickedLi.classList.add('favorite');
   }
 
   console.log(favoritesCharacters);

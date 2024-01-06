@@ -10,6 +10,7 @@
         
         .character {
             margin-bottom: 20px;
+            background-color: rgba(236, 221, 185, 0.907);
         }
     }
     
@@ -65,6 +66,6 @@
     }
 }
 
-.yellow-bg {
-    background-color: rgba(236, 221, 185, 0.907);
+.favorite {
+    background-color: rgba(236, 221, 185, 0.907) !important;
 }
