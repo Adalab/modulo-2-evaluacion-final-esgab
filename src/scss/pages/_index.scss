@@ -3,34 +3,6 @@
     min-height: 100vh;
     display: flex;
     gap: 5%;
-    
-    .favorites {
-        width: 24.5%;
-        text-align: center;
-        
-        .character {
-            margin-bottom: 20px;
-            background-color: rgba(236, 221, 185, 0.907);
-        }
-    }
-    
-    .characters {
-        width: 76.5%;
-
-        &__list {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            color: white;
-        }
-    }
-
-    .section-title {
-        margin-bottom: 30px;
-        text-align: center;
-        font-size: 30px;
-        font-weight: 600;
-    }
 
     .character {
         aspect-ratio: 3/4;
@@ -58,14 +30,63 @@
             text-align: center;
             font-size: 25px;
         }
-
-        &:hover {
-            transform: scale(1.05);
+    }
+    
+    .favorites {
+        width: 24.5%;
+        text-align: center;
+        
+        .character {
+            margin-bottom: 20px;
             background-color: rgba(236, 221, 185, 0.907);
+            position: relative;
+            &__delete-btn {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                width: 30px;
+                height: 30px;
+                color: white;
+                background-color: $color-main;
+                border: 2px solid white;
+            }
         }
+    }
+    
+    .characters {
+        width: 76.5%;
+
+        &__list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            color: white;
+
+            .character {
+                &__delete-btn {
+                    display: none;
+                }
+                &:hover {
+                    transform: scale(1.05);
+                    background-color: rgba(236, 221, 185, 0.907);
+                }
+            }
+        }
+
+    }
+
+    .section-title {
+        margin-bottom: 30px;
+        text-align: center;
+        font-size: 30px;
+        font-weight: 600;
     }
 }
 
 .favorite {
     background-color: rgba(236, 221, 185, 0.907) !important;
+}
+
+.item:hover {
+    transform: scale(1);
 }
