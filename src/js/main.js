@@ -12,7 +12,6 @@ const resetFavoritesBtn = document.querySelector('.js__resetFavoritesBtn');
 
 let disneyCharacters = [];
 let favoritesCharacters = [];
-const favoritesCharactersFromLS = JSON.parse( localStorage.getItem('favoritesCharacters') );
 
 // FUNCTIONS
 
@@ -55,15 +54,21 @@ function listenClickedCharacters() {
   }
 }
 
-// Render favorites from localStorage
-function renderFavoritesFromLS() {
+// Get from LocalStorage
+function getFromLocalStorage() {
+  const favoritesCharactersFromLS = JSON.parse( localStorage.getItem('favoritesCharacters') );
   if (favoritesCharactersFromLS === null) {
     renderCharacters(favoritesCharacters, favoritesCharactersList);
   } 
   else {
     favoritesCharacters = favoritesCharactersFromLS;
     renderCharacters(favoritesCharacters, favoritesCharactersList);
-  } 
+  }
+}
+
+// Set in LocalStorage
+function setInLocalStorage() {
+  localStorage.setItem('favoritesCharacters', JSON.stringify(favoritesCharacters));
 }
 
 // EVENT FUNCTIONS (HANDLER)
@@ -88,8 +93,8 @@ function handleClickResult(event) {
     favoritesCharacters.splice( favoriteCharacterIndex, 1 );
   }
   
-  localStorage.setItem('favoritesCharacters', JSON.stringify(favoritesCharacters));
-  renderFavoritesFromLS();
+  setInLocalStorage();
+  renderCharacters(favoritesCharacters, favoritesCharactersList);
   // add the "favorite" class to the <li> element inside the clicked <li>
   clickedLi.classList.toggle('favorite');
 }
@@ -132,9 +137,8 @@ const getApiData = () => {
       disneyCharacters = data.data;
       console.log(disneyCharacters);
       renderCharacters(disneyCharacters, charactersList);
-      renderFavoritesFromLS();
-      resetFavoritesBtn.addEventListener( 'click', resetFavorites );
   });
 };
   
+getFromLocalStorage();
 getApiData();
