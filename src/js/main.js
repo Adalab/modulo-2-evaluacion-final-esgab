@@ -82,11 +82,15 @@ function handleClickResult(event) {
     // put the character when it is not in favorites
     favoritesCharacters.push( selectedCharacter );
   }
+  else {
+    // remove when it is in favorites
+    favoritesCharacters.splice( favoriteCharacterIndex, 1 );
+  }
   
   localStorage.setItem('favoritesCharacters', JSON.stringify(favoritesCharacters));
   renderFavoritesFromLS();
   // add the "favorite" class to the <li> element inside the clicked <li>
-  clickedLi.classList.add('favorite');
+  clickedLi.classList.toggle('favorite');
 }
 
 const getApiFilteredData = (event) => {
