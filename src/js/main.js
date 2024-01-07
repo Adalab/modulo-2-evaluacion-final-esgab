@@ -6,6 +6,7 @@ const charactersList = document.querySelector('.js__charactersList');
 const favoritesCharactersList = document.querySelector('.js__favoritesList');
 const searchCharacter = document.querySelector('.js__searchCharacter');
 const searchCharacterInput = document.querySelector('.js__searchCharacterInput');
+const resetFavoritesBtn = document.querySelector('.js__resetFavoritesBtn');
 
 // DATA
 
@@ -103,9 +104,23 @@ const getApiFilteredData = (event) => {
   });
 };
 
+// Reset favorites
+function resetFavorites(event) {
+  const allCharactersLi = document.querySelectorAll('.js__characterItem');
+  for (const characterLi of allCharactersLi) {
+    characterLi.classList.remove('favorite');
+  }
+  event.preventDefault();
+  localStorage.clear();
+  favoritesCharactersList.innerHTML = '';
+  favoritesCharacters = [];
+  console.log(favoritesCharacters);
+}
+
 // EVENTS
 
 searchCharacter.addEventListener( 'submit', getApiFilteredData );
+resetFavoritesBtn.addEventListener( 'click', resetFavorites );
 
 // CODE WHEN LOADING THE PAGE
 
@@ -118,6 +133,7 @@ const getApiData = () => {
       console.log(disneyCharacters);
       renderCharacters(disneyCharacters, charactersList);
       renderFavoritesFromLS();
+      resetFavoritesBtn.addEventListener( 'click', resetFavorites );
   });
 };
   
