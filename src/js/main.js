@@ -118,9 +118,10 @@ function handleClickResult(event) {
     favoritesCharacters.splice( favoriteCharacterIndex, 1 );
   }
   
+  applyFavoriteClass();
   setInLocalStorage();
   renderFavoritesCharacters();
-  applyFavoriteClass();
+  listenFavoritesDeleteBtns();
 }
 
 const getApiFilteredData = (event) => {
@@ -134,6 +135,18 @@ const getApiFilteredData = (event) => {
       applyFavoriteClass();
   });
 };
+
+// Delete favorite from the favorites list
+function handleClickDeleteFavorites(event) {
+  const motherOfclickedBtn = event.currentTarget.parentElement;
+  const clickedCharacterId = parseInt(motherOfclickedBtn.dataset.id);
+  const favoriteCharacterIndex = favoritesCharacters.findIndex( (favoriteCharacter) => favoriteCharacter._id === clickedCharacterId );
+  favoritesCharacters.splice( favoriteCharacterIndex, 1 );
+  applyFavoriteClass();
+  setInLocalStorage();
+  renderFavoritesCharacters();
+  listenFavoritesDeleteBtns();
+}
 
 // Reset favorites
 function resetFavorites(event) {
@@ -151,6 +164,10 @@ resetFavoritesBtn.addEventListener( 'click', resetFavorites );
 
 function listenCharactersItems() {
   listenClickEvents('.js__characterItem', handleClickResult);
+}
+
+function listenFavoritesDeleteBtns() {
+  listenClickEvents('.js__deleteItem', handleClickDeleteFavorites);
 }
 
 // Listen click events
