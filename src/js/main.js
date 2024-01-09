@@ -119,14 +119,14 @@ const getApiFilteredData = (event) => {
 
 // Reset favorites
 function resetFavorites(event) {
+  event.preventDefault();
   const allCharactersLi = document.querySelectorAll('.js__characterItem');
   for (const characterLi of allCharactersLi) {
     characterLi.classList.remove('favorite');
   }
-  event.preventDefault();
-  localStorage.clear();
-  favoritesCharactersList.innerHTML = '';
   favoritesCharacters = [];
+  setInLocalStorage();
+  favoritesCharactersList.innerHTML = '';
 }
 
 // EVENTS
