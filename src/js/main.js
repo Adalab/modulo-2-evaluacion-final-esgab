@@ -53,15 +53,6 @@ function renderFavoritesCharacters() {
   renderCharactersItems(favoritesCharacters, favoritesCharactersList);
 }
 
-// Listen clicked characters
-function listenClickedCharacters() {
-  const allCharactersLi = document.querySelectorAll('.js__characterItem');
-
-  for (const characterLi of allCharactersLi) {
-    characterLi.addEventListener('click', handleClickResult);
-  }
-}
-
 // Apply 'favorite' class
 function applyFavoriteClass() {
   const characterItems = document.querySelectorAll('.js__characterItem');
@@ -162,7 +153,7 @@ function resetFavorites(event) {
 searchCharacter.addEventListener( 'submit', getApiFilteredData );
 resetFavoritesBtn.addEventListener( 'click', resetFavorites );
 
-function listenCharactersItems() {
+function listenClickedCharacters() {
   listenClickEvents('.js__characterItem', handleClickResult);
 }
 
