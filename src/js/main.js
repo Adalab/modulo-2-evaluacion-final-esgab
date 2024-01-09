@@ -23,7 +23,8 @@ function getCharacterHtmlCode(character) {
   }
 
   characterHtml += 
-  `<li class="character js__characterItem" data-id="${character._id}>
+  `<li class="character js__characterItem" data-id="${character._id}">
+    <button class="character__btn js__deleteItem">❌</button>
     <div class="character__image-container">
       <img src="${character.imageUrl}" class="character__image alt="Producto: ${character.name}">
     </div>
@@ -42,7 +43,6 @@ function renderCharactersItems(characters, htmlelement) {
   }
 
   htmlelement.innerHTML = charactersCode;
-  listenClickedCharacters();
 }
 
 function renderCharacters() {
@@ -130,6 +130,7 @@ const getApiFilteredData = (event) => {
     .then(data => { 
       disneyCharacters = data.data;
       renderCharacters();
+      listenClickedCharacters();
       applyFavoriteClass();
   });
 };
@@ -148,6 +149,10 @@ function resetFavorites(event) {
 searchCharacter.addEventListener( 'submit', getApiFilteredData );
 resetFavoritesBtn.addEventListener( 'click', resetFavorites );
 
+function listenCharactersItems() {
+  listenClickEvents('.js__characterItem', handleClickResult);
+}
+
 // Listen click events
 function listenClickEvents(selector, handler) {
   const elements = document.querySelectorAll(selector);
@@ -165,6 +170,7 @@ const getApiData = () => {
     .then(data => { 
       disneyCharacters = data.data;
       renderCharacters();
+      listenClickedCharacters();
       applyFavoriteClass();
   });
 };
