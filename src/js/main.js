@@ -62,6 +62,27 @@ function listenClickedCharacters() {
   }
 }
 
+// Apply 'favorite' class
+function applyFavoriteClass() {
+  const characterItems = document.querySelectorAll('.js__characterItem');
+  
+  for (const characterItem of characterItems) {
+    const characterId = parseInt(characterItem.dataset.id);
+  
+    // Verify if the character is in favorites list
+    const isFavorite = favoritesCharacters.find(character => character._id === characterId);
+
+    // If the character is in favorites list, add the class 'favorite'
+    // If the character is not in favorites list, remove the class 'favorite'
+    if (isFavorite) {
+      characterItem.classList.add('favorite');
+    } 
+    else {
+      characterItem.classList.remove('favorite');
+    }
+  }
+}
+
 // Get from LocalStorage
 function getFromLocalStorage() {
   const favoritesCharactersFromLS = JSON.parse( localStorage.getItem('favoritesCharacters') );
@@ -85,10 +106,6 @@ function handleClickResult(event) {
   // get the id of the clicked character
   const clickedLi = event.currentTarget;
   const clickedCharacterId = parseInt(clickedLi.dataset.id);
-  console.log(clickedLi);
-  console.log(clickedCharacterId);
-  console.log("array", disneyCharacters)
-
   const selectedCharacter = disneyCharacters.find( (character) => character._id === clickedCharacterId );
   const favoriteCharacterIndex = favoritesCharacters.findIndex( (favoriteCharacter) => favoriteCharacter._id === clickedCharacterId );
 
@@ -103,8 +120,7 @@ function handleClickResult(event) {
   
   setInLocalStorage();
   renderFavoritesCharacters();
-  // add "favorite" class to the clicked <li>
-  clickedLi.classList.toggle('favorite');
+  applyFavoriteClass();
 }
 
 const getApiFilteredData = (event) => {
@@ -114,16 +130,14 @@ const getApiFilteredData = (event) => {
     .then(data => { 
       disneyCharacters = data.data;
       renderCharacters();
+      applyFavoriteClass();
   });
 };
 
 // Reset favorites
 function resetFavorites(event) {
   event.preventDefault();
-  const allCharactersLi = document.querySelectorAll('.js__characterItem');
-  for (const characterLi of allCharactersLi) {
-    characterLi.classList.remove('favorite');
-  }
+  applyFavoriteClass();
   favoritesCharacters = [];
   setInLocalStorage();
   favoritesCharactersList.innerHTML = '';
@@ -151,6 +165,7 @@ const getApiData = () => {
     .then(data => { 
       disneyCharacters = data.data;
       renderCharacters();
+      applyFavoriteClass();
   });
 };
   
