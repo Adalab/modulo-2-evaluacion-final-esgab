@@ -40,7 +40,8 @@
             margin-bottom: 20px;
             background-color: rgba(236, 221, 185, 0.907);
             position: relative;
-            &__delete-btn {
+            cursor: default;
+            &__btn {
                 position: absolute;
                 top: 20px;
                 right: 20px;
@@ -49,6 +50,7 @@
                 color: white;
                 background-color: $color-main;
                 border: 2px solid white;
+                cursor: pointer;
             }
         }
     }
@@ -63,7 +65,7 @@
             color: white;
 
             .character {
-                &__delete-btn {
+                &__btn {
                     display: none;
                 }
                 &:hover {
@@ -85,8 +87,5 @@
 
 .favorite {
     background-color: rgba(236, 221, 185, 0.907) !important;
-}
-
-.item:hover {
-    transform: scale(1);
+    transform: scale(1) !important;
 }

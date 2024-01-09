@@ -42,7 +42,16 @@ function renderCharacters(characters, htmlelement) {
   }
 
   htmlelement.innerHTML = charactersCode;
-  listenEvents('.js__characterItem', handleClickResult);
+  listenClickedCharacters();
+}
+
+// Listen clicked characters
+function listenClickedCharacters() {
+  const allCharactersLi = document.querySelectorAll('.js__characterItem');
+
+  for (const characterLi of allCharactersLi) {
+    characterLi.addEventListener('click', handleClickResult);
+  }
 }
 
 // Get from LocalStorage
@@ -68,6 +77,9 @@ function handleClickResult(event) {
   // get the id of the clicked character
   const clickedLi = event.currentTarget;
   const clickedCharacterId = parseInt(clickedLi.dataset.id);
+  console.log(clickedLi);
+  console.log(clickedCharacterId);
+  console.log("array", disneyCharacters)
 
   const selectedCharacter = disneyCharacters.find( (character) => character._id === clickedCharacterId );
   const favoriteCharacterIndex = favoritesCharacters.findIndex( (favoriteCharacter) => favoriteCharacter._id === clickedCharacterId );
@@ -87,7 +99,7 @@ function handleClickResult(event) {
   clickedLi.classList.toggle('favorite');
 }
 
-function getApiFilteredData(event) {
+const getApiFilteredData = (event) => {
   event.preventDefault();
   fetch(`//api.disneyapi.dev/character?pageSize=50&name=${searchCharacterInput.value}`)
     .then(response => response.json())
@@ -115,8 +127,6 @@ function resetFavorites(event) {
 searchCharacter.addEventListener( 'submit', getApiFilteredData );
 resetFavoritesBtn.addEventListener( 'click', resetFavorites );
 
-// HELPERS
-
 // Listen click events
 function listenClickEvents(selector, handler) {
   const elements = document.querySelectorAll(selector);
@@ -128,7 +138,7 @@ function listenClickEvents(selector, handler) {
 // CODE WHEN LOADING THE PAGE
 
 // Get data from api
-function getApiData() {
+const getApiData = () => {
   fetch('//api.disneyapi.dev/character?pageSize=50')
     .then(response => response.json())
     .then(data => { 
