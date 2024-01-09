@@ -34,7 +34,7 @@ function getCharacterHtmlCode(character) {
 }
 
 // Render characters
-function renderCharacters(characters, htmlelement) {
+function renderCharactersItems(characters, htmlelement) {
   let charactersCode = '';
 
   for (const character of characters) {
@@ -43,6 +43,14 @@ function renderCharacters(characters, htmlelement) {
 
   htmlelement.innerHTML = charactersCode;
   listenClickedCharacters();
+}
+
+function renderCharacters() {
+  renderCharactersItems(disneyCharacters, charactersList);
+}
+
+function renderFavoritesCharacters() {
+  renderCharactersItems(favoritesCharacters, favoritesCharactersList);
 }
 
 // Listen clicked characters
@@ -58,11 +66,11 @@ function listenClickedCharacters() {
 function getFromLocalStorage() {
   const favoritesCharactersFromLS = JSON.parse( localStorage.getItem('favoritesCharacters') );
   if (favoritesCharactersFromLS === null) {
-    renderCharacters(favoritesCharacters, favoritesCharactersList);
+    renderFavoritesCharacters();
   } 
   else {
     favoritesCharacters = favoritesCharactersFromLS;
-    renderCharacters(favoritesCharacters, favoritesCharactersList);
+    renderFavoritesCharacters();
   }
 }
 
@@ -94,8 +102,8 @@ function handleClickResult(event) {
   }
   
   setInLocalStorage();
-  renderCharacters(favoritesCharacters, favoritesCharactersList);
-  // add the "favorite" class to the <li> element inside the clicked <li>
+  renderFavoritesCharacters();
+  // add "favorite" class to the clicked <li>
   clickedLi.classList.toggle('favorite');
 }
 
@@ -105,7 +113,7 @@ const getApiFilteredData = (event) => {
     .then(response => response.json())
     .then(data => { 
       disneyCharacters = data.data;
-      renderCharacters(disneyCharacters, charactersList);
+      renderCharacters();
   });
 };
 
@@ -119,7 +127,6 @@ function resetFavorites(event) {
   localStorage.clear();
   favoritesCharactersList.innerHTML = '';
   favoritesCharacters = [];
-  console.log(favoritesCharacters);
 }
 
 // EVENTS
@@ -143,8 +150,7 @@ const getApiData = () => {
     .then(response => response.json())
     .then(data => { 
       disneyCharacters = data.data;
-      console.log(disneyCharacters);
-      renderCharacters(disneyCharacters, charactersList);
+      renderCharacters();
   });
 };
   
