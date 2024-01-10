@@ -36,6 +36,7 @@
             padding: 20px;
             text-align: center;
             font-size: 24px;
+            font-weight: 600;
             @media (max-width: 1400px) {
                 font-size: 20px;
             }
@@ -143,6 +144,7 @@
             }
 
             .character {
+                transition: ease-in-out .5s;
                 &__btn {
                     display: none;
                 }
@@ -168,7 +170,6 @@
 .favorite {
     background-color: #fff8b0e7 !important;
     transform: scale(1) !important;
-    font-weight: 700;
     color: $color-main !important;
 }
 
