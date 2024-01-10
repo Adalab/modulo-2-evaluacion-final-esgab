@@ -10,12 +10,18 @@ const resetFavoritesBtn = document.querySelector('.js__resetFavoritesBtn');
 
 // DATA
 
+// Array to store Disney characters data
 let disneyCharacters = [];
+// Array to store favorite Disney characters data
 let favoritesCharacters = [];
 
 // FUNCTIONS
 
-// Get html code for all the character items
+/**
+ * Generates the HTML code for a character item
+ * @param {Object} character - The character data
+ * @returns {string} The HTML code for the character item
+ */
 function getCharacterHtmlCode(character) {
   let characterHtml = '';
 
@@ -35,28 +41,32 @@ function getCharacterHtmlCode(character) {
   return characterHtml;
 }
 
-// Render characters items
-function renderCharactersItems(characters, htmlelement) {
+/**
+ * Renders character items in a specified HTML element
+ * @param {Array} characters - The array of characters to render
+ * @param {HTMLElement} element - The HTML element to render the characters into
+ */
+function renderCharactersItems(characters, element) {
   let charactersCode = '';
 
   for (const character of characters) {
     charactersCode += getCharacterHtmlCode(character);
   }
 
-  htmlelement.innerHTML = charactersCode;
+  element.innerHTML = charactersCode;
 }
 
-// Render characters
+// Renders Disney characters into the characters list
 function renderCharacters() {
   renderCharactersItems(disneyCharacters, charactersList);
 }
 
-// Render favorites characters
+// Renders favorite characters into the favorites list
 function renderFavoritesCharacters() {
   renderCharactersItems(favoritesCharacters, favoritesCharactersList);
 }
 
-// Apply 'favorite' class
+// Applies 'favorite' class to character items if they are favorites
 function applyFavoriteClass() {
   const characterItems = document.querySelectorAll('.js__characterItem');
   
@@ -66,8 +76,6 @@ function applyFavoriteClass() {
     // Verify if the character is in favorites list
     const isFavorite = favoritesCharacters.find(character => character._id === characterId);
 
-    // If the character is in favorites list, add the class 'favorite'
-    // If the character is not in favorites list, remove the class 'favorite'
     if (isFavorite) {
       characterItem.classList.add('favorite');
     } 
@@ -77,7 +85,7 @@ function applyFavoriteClass() {
   }
 }
 
-// Get from LocalStorage
+// Gets the favorite characters from LocalStorage and shows them on the page
 function getFromLocalStorage() {
   const favoritesCharactersFromLS = JSON.parse( localStorage.getItem('favoritesCharacters') );
   if (favoritesCharactersFromLS === null) {
@@ -89,20 +97,24 @@ function getFromLocalStorage() {
   }
 }
 
-// Set in LocalStorage
+// Sets favorite characters in LocalStorage
 function setInLocalStorage() {
   localStorage.setItem('favoritesCharacters', JSON.stringify(favoritesCharacters));
 }
 
 // EVENT FUNCTIONS (HANDLER)
 
+/**
+ * Event handler for the click event on character items
+ * @param {Event} event - The click event
+ */
 function handleClickResult(event) {
   // Get the id of the clicked character
   const clickedLi = event.currentTarget;
   const clickedCharacterId = parseInt(clickedLi.dataset.id);
   // Verify which character is the clicked character
   const selectedCharacter = disneyCharacters.find( (character) => character._id === clickedCharacterId );
-  // Find the position inside the favorites characters array
+  // Find the position of the clicked character inside the favorites characters array
   const favoriteCharacterIndex = favoritesCharacters.findIndex( (favoriteCharacter) => favoriteCharacter._id === clickedCharacterId );
 
   if(favoriteCharacterIndex === -1) {
@@ -121,43 +133,59 @@ function handleClickResult(event) {
   displayResetButton();
 }
 
-// Filter characters by its name
+/**
+ * Event handler for the form to filter characters by name
+ * @param {Event} event - The form submit event
+ */
 const getApiFilteredData = (event) => {
   event.preventDefault();
   fetch(`//api.disneyapi.dev/character?pageSize=50&name=${searchCharacterInput.value}`)
     .then(response => response.json())
     .then(data => { 
-      disneyCharacters = data.data;
+      // Ensures that disneyCharacters is always an array
+      if (Array.isArray(data.data)) {
+        disneyCharacters = data.data;
+      } else {
+        disneyCharacters = [data.data];
+      }
       renderCharacters();
       listenClickedCharacters();
       applyFavoriteClass();
   });
 };
 
-// Delete favorite from the favorites list
+/**
+ * Event handler for the click event on the delete favorite button
+ * @param {Event} event - The click event
+ */
 function handleClickDeleteFavorite(event) {
+  // Get the id of the mother (character item) of the clicked button
   const motherOfclickedBtn = event.currentTarget.parentElement;
   const clickedCharacterId = parseInt(motherOfclickedBtn.dataset.id);
+  // Find the position of the character of the clicked button inside the favorites characters array
   const favoriteCharacterIndex = favoritesCharacters.findIndex( (favoriteCharacter) => favoriteCharacter._id === clickedCharacterId );
   favoritesCharacters.splice( favoriteCharacterIndex, 1 );
-  applyFavoriteClass();
   setInLocalStorage();
   renderFavoritesCharacters();
   listenFavoritesDeleteBtns();
+  applyFavoriteClass();
   displayResetButton();
 }
 
-// Reset favorites
-function resetFavorites(event) {
+/**
+ * Event handler for the click on the reset favorites button
+ * @param {Event} event - The click event
+ */
+function handleClickResetFavorites(event) {
   event.preventDefault();
-  applyFavoriteClass();
   favoritesCharacters = [];
   setInLocalStorage();
+  applyFavoriteClass();
   favoritesCharactersList.innerHTML = '';
   displayResetButton();
 }
 
-// Show or hide the reset button when there are not favorites characters
+// Displays or hides the reset button if there are favorites characters or not 
 function displayResetButton() {
   if (favoritesCharacters.length === 0) {
     resetFavoritesBtn.classList.add('hidden');
@@ -167,10 +195,15 @@ function displayResetButton() {
   }
 }
 
+// Resets the value on the search form input
+function resetSearchCharacterInput() {
+  searchCharacterInput.value = '';
+}
+
 // EVENTS
 
 searchCharacter.addEventListener( 'submit', getApiFilteredData );
-resetFavoritesBtn.addEventListener( 'click', resetFavorites );
+resetFavoritesBtn.addEventListener( 'click', handleClickResetFavorites );
 
 function listenClickedCharacters() {
   listenClickEvents('.js__characterItem', handleClickResult);
@@ -205,4 +238,4 @@ const getApiData = () => {
 getFromLocalStorage();
 getApiData();
 displayResetButton();
-searchCharacterInput.value = '';
+resetSearchCharacterInput();
