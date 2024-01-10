@@ -24,7 +24,7 @@ function getCharacterHtmlCode(character) {
 
   characterHtml += 
   `<li class="character js__characterItem" data-id="${character._id}">
-    <button class="character__btn js__deleteItem">❌</button>
+  <button class="character__btn js__deleteItem"><i class="fa-solid fa-xmark"></i></button>
     <div class="character__image-container">
       <img src="${character.imageUrl}" class="character__image alt="Producto: ${character.name}">
     </div>
