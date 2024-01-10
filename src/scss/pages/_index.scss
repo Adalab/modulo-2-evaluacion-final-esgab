@@ -19,7 +19,7 @@
         list-style-type: none;
         box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
         transition: ease-in-out .3s;
-        color: #363636;
+        color: #686868;
     
         &__image-container {
             height: 75%;
@@ -37,6 +37,7 @@
             text-align: center;
             font-size: 24px;
             font-weight: 600;
+
             @media (max-width: 1400px) {
                 font-size: 20px;
             }
