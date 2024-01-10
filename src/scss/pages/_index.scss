@@ -3,6 +3,12 @@
     min-height: 100vh;
     display: flex;
     gap: 7%;
+    @media (max-width: 1200px) {
+        flex-direction: column;
+    }
+    @media (max-width: 768px) {
+        padding: 80px 7%;
+    }
 
     .character {
         aspect-ratio: 3/4;
@@ -13,6 +19,7 @@
         list-style-type: none;
         box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
         transition: ease-in-out .3s;
+        color: #363636;
     
         &__image-container {
             height: 75%;
@@ -27,37 +34,63 @@
     
         &__name {
             padding: 20px;
-            color: rgb(54, 54, 54);
             text-align: center;
             font-size: 24px;
+            @media (max-width: 1400px) {
+                font-size: 20px;
+            }
         }
     }
     
     .favorites {
         width: 24.5%;
         text-align: center;
-        
-        .character {
-            margin-bottom: 20px;
-            background-color: #fff8b0e7;
-            position: relative;
-            cursor: default;
+        @media (max-width: 1200px) {
+            width: 100%;
+        }
 
-            &__btn {
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                width: 35px;
-                height: 35px;
-                color: white;
-                background-color: $color-main;
-                border: 0;
-                border-radius: 50%;
-                cursor: pointer;
-                box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-                transition: ease-in-out .3s;
-                &:hover {
-                    transform: scale(1.2);
+        &__list {
+            @media (max-width: 1200px) {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+            @media (max-width: 1024px) {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            @media (max-width: 768px) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            @media (max-width: 450px) {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .character {
+                margin-bottom: 20px;
+                background-color: #fff8b0e7;
+                position: relative;
+                cursor: default;
+                font-weight: 700;
+                color: $color-main !important;
+    
+                &__btn {
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    width: 35px;
+                    height: 35px;
+                    color: white;
+                    background-color: $color-main;
+                    border: 0;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+                    transition: ease-in-out .3s;
+    
+                    &:hover {
+                        transform: scale(1.2);
+                    }
                 }
             }
         }
@@ -86,12 +119,28 @@
     
     .characters {
         width: 76.5%;
+        @media (max-width: 1200px) {
+            width: 100%;
+            margin-top: 50px;
+        }
 
         &__list {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             color: white;
+            @media (max-width: 1200px) {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            @media (max-width: 1024px) {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            @media (max-width: 768px) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            @media (max-width: 450px) {
+                grid-template-columns: repeat(1, 1fr);
+            }
 
             .character {
                 &__btn {
@@ -119,6 +168,8 @@
 .favorite {
     background-color: #fff8b0e7 !important;
     transform: scale(1) !important;
+    font-weight: 700;
+    color: $color-main !important;
 }
 
 .hidden {
