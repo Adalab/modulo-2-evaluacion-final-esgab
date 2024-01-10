@@ -15,6 +15,7 @@ let favoritesCharacters = [];
 
 // FUNCTIONS
 
+// Get html code for all the character items
 function getCharacterHtmlCode(character) {
   let characterHtml = '';
 
@@ -34,7 +35,7 @@ function getCharacterHtmlCode(character) {
   return characterHtml;
 }
 
-// Render characters
+// Render characters items
 function renderCharactersItems(characters, htmlelement) {
   let charactersCode = '';
 
@@ -45,10 +46,12 @@ function renderCharactersItems(characters, htmlelement) {
   htmlelement.innerHTML = charactersCode;
 }
 
+// Render characters
 function renderCharacters() {
   renderCharactersItems(disneyCharacters, charactersList);
 }
 
+// Render favorites characters
 function renderFavoritesCharacters() {
   renderCharactersItems(favoritesCharacters, favoritesCharactersList);
 }
@@ -94,18 +97,20 @@ function setInLocalStorage() {
 // EVENT FUNCTIONS (HANDLER)
 
 function handleClickResult(event) {
-  // get the id of the clicked character
+  // Get the id of the clicked character
   const clickedLi = event.currentTarget;
   const clickedCharacterId = parseInt(clickedLi.dataset.id);
+  // Verify which character is the clicked character
   const selectedCharacter = disneyCharacters.find( (character) => character._id === clickedCharacterId );
+  // Find the position inside the favorites characters array
   const favoriteCharacterIndex = favoritesCharacters.findIndex( (favoriteCharacter) => favoriteCharacter._id === clickedCharacterId );
 
   if(favoriteCharacterIndex === -1) {
-    // put the character when it is not in favorites
+    // Put the character when it is not in favorites
     favoritesCharacters.push( selectedCharacter );
   }
   else {
-    // remove when it is in favorites
+    // Remove when it is in favorites
     favoritesCharacters.splice( favoriteCharacterIndex, 1 );
   }
   
@@ -113,8 +118,10 @@ function handleClickResult(event) {
   setInLocalStorage();
   renderFavoritesCharacters();
   listenFavoritesDeleteBtns();
+  displayResetButton();
 }
 
+// Filter characters by its name
 const getApiFilteredData = (event) => {
   event.preventDefault();
   fetch(`//api.disneyapi.dev/character?pageSize=50&name=${searchCharacterInput.value}`)
@@ -128,7 +135,7 @@ const getApiFilteredData = (event) => {
 };
 
 // Delete favorite from the favorites list
-function handleClickDeleteFavorites(event) {
+function handleClickDeleteFavorite(event) {
   const motherOfclickedBtn = event.currentTarget.parentElement;
   const clickedCharacterId = parseInt(motherOfclickedBtn.dataset.id);
   const favoriteCharacterIndex = favoritesCharacters.findIndex( (favoriteCharacter) => favoriteCharacter._id === clickedCharacterId );
@@ -137,6 +144,7 @@ function handleClickDeleteFavorites(event) {
   setInLocalStorage();
   renderFavoritesCharacters();
   listenFavoritesDeleteBtns();
+  displayResetButton();
 }
 
 // Reset favorites
@@ -146,6 +154,17 @@ function resetFavorites(event) {
   favoritesCharacters = [];
   setInLocalStorage();
   favoritesCharactersList.innerHTML = '';
+  displayResetButton();
+}
+
+// Show or hide the reset button when there are not favorites characters
+function displayResetButton() {
+  if (favoritesCharacters.length === 0) {
+    resetFavoritesBtn.classList.add('hidden');
+  }
+  else {
+    resetFavoritesBtn.classList.remove('hidden');
+  }
 }
 
 // EVENTS
@@ -158,10 +177,10 @@ function listenClickedCharacters() {
 }
 
 function listenFavoritesDeleteBtns() {
-  listenClickEvents('.js__deleteItem', handleClickDeleteFavorites);
+  listenClickEvents('.js__deleteItem', handleClickDeleteFavorite);
 }
 
-// Listen click events
+// Listen click events helper
 function listenClickEvents(selector, handler) {
   const elements = document.querySelectorAll(selector);
   for (const element of elements) {
@@ -185,3 +204,5 @@ const getApiData = () => {
   
 getFromLocalStorage();
 getApiData();
+displayResetButton();
+searchCharacterInput.value = '';
